@@ -1,0 +1,882 @@
+// <МИКСИНЫ>===============================================================================================
+// миксин - комплект свойств, для быстрого вызова(подробнее mixins.scss)
+@import "mixins.scss";
+// </МИКСИНЫ>===============================================================================================
+
+// <ШРИФТЫ>===============================================================================================
+// <Подключаем шрифты>=======================================================================================
+@font-face {
+	font-family: "Roboto";
+	src: url("../../../public/fonts/Roboto-Bold.eot");
+	src: local("☺"), url("../../../public/fonts/Roboto-Bold.woff") format("woff"),
+		url("../../../public/fonts/Roboto-Bold.ttf") format("truetype"),
+		url("../../../public/fonts/Roboto-Bold.svg") format("svg");
+	font-weight: 700;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Roboto";
+	src: url("../../../public/fonts/Roboto-Regular.eot");
+	src: local("☺"), url("../../../public/fonts/Roboto-Regular.woff") format("woff"),
+		url("../../../public/fonts/Roboto-Regular.ttf") format("truetype"),
+		url("../../../public/fonts/Roboto-Regular.svg") format("svg");
+	font-weight: normal;
+	font-style: normal;
+}
+// <ШРИФТ ПО УМОЛЧАНИЮ>==========================================================================================
+// переменая шрифта по умолчанию (можно несколько сразу завести)
+$fontfamily: "Roboto";
+// </ШРИФТ ПО УМОЛЧАНИЮ>==========================================================================================
+
+// </ШРИФТЫ>=======================================================================================================
+
+// <ПЕРЕМЕННЫЕ>===========================================================================================================
+// сетка адаптива
+// минимальная ширина. статична
+$minwidth: 320px;
+// начальное значение контейниера из PSD. чаще всего использ дизайнерами
+$mw: 1170;
+// 1-ый брейкпоинт + 12px (по 6 с каждой стороны). измен по усмотрению
+$md1: $mw + 12;
+// планшетное расширение
+$md2: 991.98;
+// телефоны
+$md3: 767.98;
+// маленькие телефоны
+$md4: 479.98;
+// </ПЕРЕМЕННЫЕ>===========================================================================================================
+
+// <ОБНУЛЕНИЕ, ОБЩИЕ ПАРАМЕТРЫ>===============================================================================================
+// обнуляющий стиль для стандартизации по всем свойствам, брайзерам и пр.
+@import "null.scss";
+// </ОБНУЛЕНИЕ, ОБЩИЕ ПАРАМЕТРЫ>===============================================================================================
+
+//<ОСНОВНАЯ СЕТКА>===========================================================================================================
+// основная сетка. подстройка под расширение экрана с учётом переменных из сетки адаптива
+// mw - изначальная ширина контейниера
+.container {
+	margin: 0 auto;
+	width: 100%;
+	min-height: 100%;
+	max-height: 100%;
+	display: flex;
+	flex-direction: row;
+	flex: 1 1 100%;
+	font-family: $fontfamily !important;
+}
+//</ОСНОВНАЯ СЕТКА>===========================================================================================================
+
+//</ПОДКЛЮЧЕНИЕ ФАЙЛОВ СТИЛЕЙ СТРАНИЦ И ЭЛЛЕМЕНТОВ>====================================================================================================
+
+//<ОСНОВНОЙ БЛОК>====================================================================================================
+
+* {
+	scrollbar-width: thin;
+	scrollbar-color: blue #57658c;
+}
+
+/* для Chrome/Edge/Safari */
+*::-webkit-scrollbar {
+	width: 10px;
+}
+*::-webkit-scrollbar-track {
+	background: #97a3c463;
+	border-radius: 5px;
+	width: 8px;
+}
+*::-webkit-scrollbar-thumb {
+	background-color: #808ead;
+	border-radius: 5px;
+	width: 8px;
+}
+
+.window {
+	flex: 1 1 100%;
+	@include flexbox();
+	justify-content: center;
+	width: 100%;
+
+	@media (max-width: 650px) {
+		flex-direction: column;
+	}
+
+	&__sidebar {
+		flex: 1 1 30%;
+		@include flexbox();
+		max-height: 100%;
+		flex-direction: column;
+		align-items: flex-start;
+		background: #ffffff;
+		border-right: 1px solid #d9dce0;
+		gap: 8px;
+		position: relative;
+
+		@media (max-width: 650px) {
+			flex: 0 1 12%;
+			gap: 0;
+		}
+	}
+
+	&__chat {
+		flex: 0 1 70%;
+		@include flexbox();
+		max-height: 100vh;
+		flex-direction: column;
+		align-items: stretch;
+		position: relative;
+
+		@media (max-width: 650px) {
+			flex: 0 1 88%;
+			// max-height: 75vh;
+			max-height: 100%;
+			overflow-y: auto;
+		}
+	}
+}
+.sidebar {
+	&__search {
+		@include flexbox();
+		align-items: center;
+		padding: 8px 16px;
+		gap: 16px;
+		height: 56px;
+		align-self: stretch;
+	}
+
+	&__users {
+		@include flexbox();
+		flex-direction: column;
+		align-items: flex-start;
+		align-self: stretch;
+		@include anim(0.4s, 0.1s);
+		overflow-y: auto;
+
+		@media (max-width: 650px) {
+			max-height: 160px;
+		}
+
+		&-hidden {
+			transform: translateX(-100%);
+		}
+
+		&-not {
+			font-size: 16px;
+			color: #57658c;
+			text-align: center;
+			align-self: stretch;
+			margin-top: 30px;
+		}
+	}
+
+	&__logout {
+		@include flexbox();
+		flex-direction: column;
+		align-items: center;
+		padding-top: 55px;
+
+		&-button {
+			display: block;
+			font-size: 18px;
+			background-color: #8babd86e;
+			color: #57658c;
+			font-weight: 700;
+			padding: 5px 10px 5px 10px;
+			border-radius: 5px;
+			box-shadow: 0px 3px 0 2px #57658c;
+
+			&:active {
+				box-shadow: 0px 1px 0 1px #57658c;
+				margin-top: 2px;
+			}
+		}
+	}
+
+	&__settings {
+		position: absolute;
+		visibility: hidden;
+		content: "";
+		height: 100%;
+		width: 100%;
+		transform: translateX(100%);
+
+		&-success {
+			font-size: 14px;
+			color: green;
+			text-align: center;
+			margin-top: 15px;
+		}
+
+		&-error {
+			font-size: 12px;
+			color: red;
+			text-align: center;
+			margin-top: 15px;
+		}
+
+		&-show {
+			@include anim(0.3s, 0.3s);
+			visibility: visible;
+			transform: translateX(0);
+
+			@media (max-width: 650px) {
+				@include flexbox();
+				justify-content: space-around;
+				align-items: baseline;
+			}
+		}
+
+		&-upload {
+			position: relative;
+			@include flexbox();
+			flex-direction: column;
+			align-items: center;
+			text-align: center;
+			margin-top: 25px;
+			font-family: "Roboto" !important;
+
+			&-logo {
+				@include flexbox();
+				align-self: center;
+				align-items: center;
+				justify-content: center;
+				flex-shrink: 0;
+				width: 48px;
+				height: 48px;
+				border-radius: 50%;
+				margin-top: 20px;
+				margin-bottom: 5px;
+				overflow: hidden;
+
+				img {
+					height: 100%;
+					width: 100%;
+					object-fit: cover;
+					object-position: center;
+				}
+			}
+
+			&-img {
+				position: absolute;
+				background: url("../../img/upload.png") no-repeat;
+				background-size: contain;
+				width: 30px;
+				height: 30px;
+				top: 20%;
+				left: 3%;
+			}
+
+			&-label {
+				position: relative;
+				display: inline-block;
+
+				span {
+					position: relative;
+					display: inline-block;
+					cursor: pointer;
+					outline: none;
+					text-decoration: none;
+					font-size: 18px;
+					vertical-align: middle;
+					text-align: center;
+					line-height: 22px;
+					height: 40px;
+					padding: 10px 20px 10px 40px;
+					border-bottom: 1px solid #57658c;
+					transition: background-color 0.2s;
+					color: #57658c;
+				}
+
+				input {
+					position: absolute;
+					z-index: -2;
+					opacity: 0;
+					display: block;
+					width: 0;
+					height: 0;
+
+					&:focus + span {
+						box-shadow: 0 0 0 0.2rem #57658c;
+					}
+
+					&:hover span {
+						background-color: #434a62;
+					}
+
+					&:active span {
+						background-color: #646970;
+					}
+				}
+			}
+		}
+	}
+}
+
+.search {
+	&__burger {
+		@include flexbox();
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		flex: 0 0 auto;
+		width: 40px;
+		height: 40px;
+		position: relative;
+		margin-left: 5px;
+		cursor: pointer;
+	}
+	&__field {
+		flex: 1 1 280px;
+		min-width: 120px;
+		display: flex;
+		align-items: center;
+		padding: 8px 16px;
+		height: 40px;
+		background: #f5f5f5;
+		border-radius: 22px;
+		@include anim(0.4s, 0.1s);
+
+		@media (max-width: 650px) {
+			height: 35px;
+		}
+
+		&-hidden {
+			transform: translateY(-130%);
+		}
+	}
+
+	&__icon {
+		flex: 0 0 auto;
+		width: 24px;
+		height: 24px;
+		flex: 0 0 auto;
+	}
+
+	&__content {
+		flex: 1 1 auto;
+		margin-left: 5px;
+
+		@media (max-width: 768px) {
+			width: 75px;
+		}
+
+		input {
+			width: 100%;
+		}
+
+		.search-chats {
+			height: 20px;
+			font-size: 16px;
+			line-height: 20px;
+			color: #707991;
+			background-color: inherit;
+			max-width: 100%;
+		}
+	}
+}
+
+.users {
+	&__one {
+		@include flexbox();
+		align-items: center;
+		padding: 12px 16px;
+		width: 364px;
+		width: 100%;
+
+		@media (max-width: 650px) {
+			padding: 6px 12px;
+		}
+
+		&:hover {
+			cursor: pointer;
+			background-color: #9bbce96f;
+		}
+	}
+
+	&__logo {
+		@include flexbox();
+		align-items: center;
+		justify-content: center;
+		flex-shrink: 0;
+		width: 48px;
+		height: 48px;
+		background: #8babd8;
+		border-radius: 50%;
+		overflow: hidden;
+	}
+
+	&__logo-name {
+		font-weight: 700;
+		font-size: 20px;
+		line-height: 20px;
+		color: #ffffff;
+		margin: 0;
+	}
+
+	&__logo-img img {
+		height: 100%;
+		width: 100%;
+		object-fit: cover;
+		object-position: center;
+	}
+
+	&__row {
+		flex: 1 1 auto;
+		@include flexbox();
+		flex-direction: column;
+		align-items: flex-start;
+		height: 46px;
+		margin-left: 16px;
+	}
+}
+.row {
+	&__top {
+		@include flexbox();
+		align-items: center;
+		width: 100%;
+		margin-bottom: 5px;
+	}
+
+	&__search {
+		font-size: 18px;
+		font-weight: 700;
+		margin: auto 0;
+	}
+
+	&__name {
+		flex: 1 1 230px;
+		@include flexbox();
+		align-items: center;
+
+		p {
+			height: 24px;
+			font-weight: 700;
+			font-size: 18px;
+			line-height: 22px;
+			margin: 0;
+			padding-right: 5px;
+			overflow: hidden;
+		}
+	}
+
+	&__time {
+		flex: 0 0 auto;
+		font-size: 12px;
+		line-height: 16px;
+		color: #707991;
+	}
+
+	&__bottom {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		width: 268px;
+		align-self: stretch;
+		width: 100%;
+	}
+
+	&__last-message {
+		padding-right: 5px;
+	}
+
+	&__last-message-count {
+		flex: 0 0 auto;
+		width: 18px;
+		height: 18px;
+		background: #78e378;
+		border-radius: 50%;
+		font-size: 12px;
+		line-height: 16px;
+		text-align: center;
+		color: #ffffff;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		p {
+			margin: 0;
+		}
+	}
+
+	&__last-message-text {
+		height: 18px;
+		font-size: 14px;
+		line-height: 18px;
+		color: #707991;
+		overflow: hidden;
+		margin: 0;
+	}
+}
+.chat {
+	&__topbar {
+		@include flexbox;
+		padding: 8px 16px;
+		gap: 8px;
+		height: 56px;
+		border-bottom: 1px solid #d9dce0;
+
+		@media (max-width: 650px) {
+			background-color: #afc1da4e;
+		}
+	}
+
+	&__user {
+		@include flexbox;
+		flex: 1 1 740px;
+		align-items: center;
+		gap: 16px;
+	}
+
+	&__user.my {
+		justify-content: flex-end;
+	}
+
+	&__action {
+		@include flexbox;
+		flex: 0 0 160px;
+	}
+
+	&__block {
+		flex: 0 1 100%;
+		background: url("../../../public/img/background.png"), #8babd8;
+		background-blend-mode: overlay;
+		background-size: cover;
+		overflow-y: auto;
+	}
+
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Tempalate topbar
+
+.user {
+	&__logo {
+		@include flexbox;
+		align-items: center;
+		justify-content: center;
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		overflow: hidden;
+		background: #8babd8;
+
+		&-online {
+			border: 2px solid greenyellow;
+		}
+
+		&-name {
+			font-weight: 700;
+			font-size: 20px;
+			line-height: 20px;
+			color: #ffffff;
+			margin: 0;
+		}
+
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			object-position: center;
+		}
+	}
+
+	&__info {
+		@include flexbox();
+		flex-direction: column;
+		gap: 4px;
+	}
+
+	&__name {
+		flex: 0 0 50%;
+		font-weight: 700;
+		font-size: 18px;
+		line-height: 20px;
+	}
+
+	&__last-seen {
+		flex: 0 0 50%;
+		font-size: 12px;
+		line-height: 18px;
+		color: #707991;
+	}
+}
+
+.chat {
+	&__search {
+		@include flexbox();
+		justify-content: center;
+		align-items: center;
+		flex: 1 1 33.333%;
+		margin: 0 4px;
+
+		img {
+			display: inline-block;
+		}
+	}
+
+	&__phone {
+		@include flexbox();
+		justify-content: center;
+		align-items: center;
+		flex: 1 1 33.333%;
+		margin: 0 4px;
+
+		img {
+			display: inline-block;
+		}
+	}
+
+	&__dots {
+		@include flexbox();
+		justify-content: center;
+		align-items: center;
+		flex: 1 1 33.333%;
+		margin: 0 4px;
+
+		img {
+			display: inline-block;
+		}
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Temaplate chat messages
+
+.chat {
+	&__container {
+		margin: 0 auto;
+		width: 75%;
+		min-height: 100%;
+		@include flexbox();
+		flex-direction: column;
+		justify-content: flex-end;
+		align-items: center;
+		padding: 24px 0px;
+		position: relative;
+	}
+
+	&__hello {
+		font-size: 32px;
+		font-weight: 700;
+		color: #ffffff;
+		position: absolute;
+		top: 10%;
+
+		@media (max-width: 768px) {
+			font-size: 26px;
+		}
+	}
+
+	&__spinner {
+		text-align: center;
+		position: absolute;
+		top: 40%;
+		left: 50%;
+		@include tr(-50%, 0, 0);
+	}
+
+	&__writer {
+		@include flexbox();
+		align-items: center;
+		padding: 8px 16px;
+		width: 100%;
+		background: #ffffff;
+		border-radius: 12px;
+		margin-top: 8px;
+	}
+
+	&__content {
+		@include flexbox();
+		justify-content: flex-end;
+		align-items: center;
+		align-self: stretch;
+		margin: 8px 0;
+	}
+
+	&__date {
+	}
+}
+.writer {
+	&__form {
+		height: 100%;
+		width: 100%;
+
+		button {
+			background-color: inherit;
+		}
+	}
+
+	&__clear {
+		flex: 1 1 auto;
+		margin-right: 15px;
+		cursor: pointer;
+		visibility: hidden;
+		@include anim(0.1s, 0.1s);
+	}
+
+	&__textarea {
+		resize: none;
+		width: 100%;
+		max-height: 100%;
+		height: auto;
+		font-size: 18px;
+		line-height: 22px;
+		align-self: center;
+		overflow: hidden;
+	}
+
+	&__text {
+		flex: 1 1 100%;
+		margin: 0 16px 0 0;
+		min-height: 22px;
+	}
+
+	&__send {
+		flex: 1 1 auto;
+	}
+}
+.message {
+	&__block {
+		@include flexbox();
+		max-width: 90%;
+		flex-direction: column;
+		justify-content: center;
+		align-items: flex-end;
+		padding: 4px 12px;
+		border-radius: 12px;
+		position: relative;
+	}
+
+	.my {
+		background: #78e378;
+	}
+
+	.his {
+		background: #ffffff;
+		margin-right: auto;
+	}
+
+	&__delete {
+		position: absolute;
+		display: block;
+		width: 32px;
+		height: 32px;
+		top: 0;
+		left: 100%;
+		margin: -15px 0 0 -20px;
+		background: url("../../../public/img/close.png");
+	}
+
+	&__text {
+		font-size: 18px;
+		line-height: 22px;
+	}
+
+	&__info {
+		@include flexbox();
+		align-items: center;
+		padding: 0px 4px;
+		height: 16px;
+	}
+
+	&__time-my {
+		font-size: 12px;
+		line-height: 16px;
+		color: #ffffff;
+	}
+
+	&__time-his {
+		font-size: 12px;
+		line-height: 16px;
+	}
+
+	&__status {
+		margin-left: 4px;
+
+		img {
+			height: 14px;
+			width: auto;
+			object-fit: cover;
+			object-position: center;
+		}
+	}
+}
+.date {
+	&__text {
+	}
+}
+
+//====================================================================================================
+
+// Burger menu
+
+.burger__line {
+	width: 30px;
+	min-height: 2px;
+	background-color: black;
+	margin: 4px 0;
+}
+.burger__close {
+	position: absolute;
+	top: 40%;
+	right: 5px;
+}
+
+.burger__curtain {
+	background-color: #8babd8;
+	opacity: 0.5;
+}
+//====================================================================================================
+
+.login {
+	flex: 0 1 50%;
+	background: #8babd86e;
+	margin: 0 auto;
+	padding: 15% 10% 0 10%;
+	font-family: "Roboto" !important;
+
+	&__welcome {
+		text-align: center !important;
+		margin-bottom: 15px;
+		font-weight: 700;
+		font-size: 24px;
+		color: #57658c;
+	}
+
+	&__error {
+		text-align: center;
+		color: red;
+		font-size: 14px;
+	}
+
+	label {
+		color: #57658c !important;
+		font-weight: 700;
+	}
+
+	.ant-col {
+		text-align: left !important;
+	}
+}
+
+// Spinner=======================================================================================================
+.spinner {
+	text-align: center;
+}
+
+.ant-spin-dot-item {
+	background-color: #d9dce0 !important;
+	width: 15px !important;
+	height: 15px !important;
+}
+.ant-spin-dot {
+	width: 2em !important;
+	height: 2em !important;
+}
+.ant-spin-text {
+	font-size: 20px !important;
+}
+
+//</ОСНОВНОЙ БЛОК>====================================================================================================
