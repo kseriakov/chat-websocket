@@ -30,8 +30,6 @@ const Chat = (props) => {
     const [heightOld, setHeightOld] = useState(null);
     const [heightCurrent, setHeightCurrent] = useState(null);
     const [readingMessages, setReadingMessages] = useState([]);
-
-    // const [webSocketsSidebar, setWebSocketsSidebar] = useState([]);
     const [countUpdateSidebar, setCountUpdateSidebar] = useState(0);
 
     const { user_id } = useSelector(({ authReducer }) => authReducer);
@@ -60,6 +58,9 @@ const Chat = (props) => {
     }, []);
 
     const onInputText = (e) => {
+        // Чтобы не прыгал скролл при вводе текста, после скрола вверх
+        setDefaultScroll();
+
         setInputText(e.target.value);
 
         // Отзывчивая textarea
@@ -68,6 +69,8 @@ const Chat = (props) => {
 
     // Клик по иконке "отправить"
     const sendNewMessage = (e) => {
+        setDefaultScroll();
+
         sendFormContent(e, inputText);
     };
 
@@ -92,10 +95,13 @@ const Chat = (props) => {
         txtRef.current.style.height = "auto";
         // Передает собеседнику чата сигнал, что получено новое сообщение и надо вызвать getLastChats
         updateSidebar();
-        setScrollUp(false);
+
+        setDefaultScroll();
     };
 
     const onClearInputText = () => {
+        setDefaultScroll();
+
         focusOnTextArea();
         txtRef.current.style.height = "auto";
     };
@@ -107,7 +113,8 @@ const Chat = (props) => {
         // setMessages([]);
         webSocket.deleteMessage(pk);
         updateSidebar();
-        setScrollUp(false);
+        
+        setDefaultScroll();
     };
 
     const onScrollChat = (e) => {
@@ -160,6 +167,12 @@ const Chat = (props) => {
         setInputText("");
         txtRef.current.focus();
     };
+
+    // Для предотвращения скачков скроллинга
+    const setDefaultScroll = () => {
+        setScrollUp(false);
+        setHeightOld(null);
+    }
 
     // Вызывается после построения DOM структуры страницы
     // Здесь устанавливаем прокрутку всегда внизу, если не было скрола вверх
