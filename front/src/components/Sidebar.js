@@ -175,7 +175,7 @@ const UnreadMessages = (props) => {
 const SidebarOne = (props) => {
     const UserLogo = (
         <div className="users__logo-img">
-            <img src={`${urlServer}${props.userLogo}`} alt="" />
+            <img src={`http://${urlServer}${props.userLogo}`} alt="" />
         </div>
     );
     const LogoName = <p className="users__logo-name">{props.logoName}</p>;

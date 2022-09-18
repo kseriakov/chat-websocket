@@ -1,3 +1,5 @@
+// Ушли от варианта подключения ко всем пользователям
+
 import { waitingForConnect } from "./WebSocket";
 
 const webSocketInstanceSB = (from_id, to_id, setCountUpdateSidebar) => {

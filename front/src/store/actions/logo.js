@@ -1,7 +1,7 @@
 import axios from "axios";
 
 import * as actionTypes from "./actionTypes";
-import { setTokenInHeaders, api } from "./auth";
+import { setTokenInHeaders, urlServer } from "./auth";
 
 export const logoUploadStart = () => {
     return {
@@ -40,7 +40,7 @@ export const loadServerLogo = (token) => {
 
         const config = setTokenInHeaders(token);
         axios
-            .get("http://127.0.0.1:8000/api/logo/", config)
+            .get(`http://${urlServer}/api/logo/`, config)
             .then((res) => {
                 const logo = res.data.logo;
                 localStorage.setItem("logo", logo);

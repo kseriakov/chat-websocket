@@ -41,7 +41,7 @@ const TopBar = () => {
             logo = userToLogoList[0].logo;
             status = userToLogoList[0].is_online;
             if (logo) {
-                logo = `${urlServer}${logo}`;
+                logo = `http://${urlServer}${logo}`;
             }
         }
         return {
@@ -60,17 +60,6 @@ const TopBar = () => {
         <div className="chat__topbar">
             {userToChat}
             <ChatUser myUser={"my"} username={username} logo={userLogo} />
-            {/* <div className="chat__action">
-                <div className="chat__search">
-                    <img src="/img/search.png" alt="" />
-                </div>
-                <div className="chat__phone">
-                    <img src="/img/phone.png" alt="" />
-                </div>
-                <div className="chat__dots">
-                    <img src="/img/dots.png" alt="" />
-                </div>
-            </div> */}
         </div>
     );
 };

@@ -4,6 +4,7 @@ import axios from "axios";
 
 import { Spinner } from "./Login";
 import * as actions from "../store/actions/logo";
+import { urlServer } from "../store/actions/auth";
 
 const UploadLogo = () => {
     const dispatch = useDispatch();
@@ -35,10 +36,10 @@ const UploadLogo = () => {
 
         const isLogoOnServer = checkLogoOnServer(token);
         if (isLogoOnServer) {
-            sendData("http://127.0.0.1:8000/api/logo/", "PUT", formData);
+            sendData(`http://${urlServer}/api/logo/`, "PUT", formData);
         } else {
             sendData(
-                "http://127.0.0.1:8000/api/create/logo/",
+                `http://${urlServer}/api/create/logo/`,
                 "POST",
                 formData
             );
@@ -53,7 +54,7 @@ const UploadLogo = () => {
             },
         };
 
-        const res = await axios.get("http://127.0.0.1:8000/api/logo/", config);
+        const res = await axios.get(`http://${urlServer}/api/logo/`, config);
         if (res.data.logo) {
             return true;
         } else {

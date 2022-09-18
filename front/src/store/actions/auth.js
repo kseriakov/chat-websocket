@@ -4,8 +4,10 @@ import * as actionTypes from "./actionTypes";
 
 const tokenLiveTime = 86400; // в секундах - один день
 
-export const urlServer = "http://127.0.0.1:8000";
-export const api = `${urlServer}/api/dj-rest-auth`;
+// Адрес используется далее во всем приложении
+export const urlServer = "w-chat.space";
+
+export const api = `http://${urlServer}/api/dj-rest-auth`;
 
 export const authStart = () => {
     return {

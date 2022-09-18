@@ -1,7 +1,8 @@
 import { sendDataToConsumers } from "./WebSocket";
+import { urlServer } from "./store/actions/auth";
 
 const webSocketUserInstance = (from_id, setCountUpdateSidebar) => {
-    const path = `ws://127.0.0.1:8000/ws/user/${from_id}/`;
+    const path = `ws://${urlServer}/ws/user/${from_id}/`;
 
     // Соединение всего закрывается перед открытием нового
     // Чтобы корректно удалялся экземпляр канала в модели ReadMessage

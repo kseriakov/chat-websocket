@@ -1,3 +1,5 @@
+import { urlServer } from "./store/actions/auth";
+
 const webSocketInstance = (
     setMessages,
     setLastChats,
@@ -18,7 +20,7 @@ const webSocketInstance = (
         pathItem = `${id1}/${id2}`;
     }
 
-    const path = `ws://127.0.0.1:8000/ws/chat/${pathItem}/`;
+    const path = `ws://${urlServer}/ws/chat/${pathItem}/`;
 
     // Закрытие действующего соединения перед новым подключением
     if (webSocketInstance._instance) {
@@ -62,7 +64,6 @@ const webSocketInstance = (
             }
             case "messages": {
                 if (messageFor == from_id) {
-                    console.log('fffff');
                     setFetchMessagesInState(data_res, availableMessages);
                 } else {
                     setReaidingMessagesInState(readingMessages);
@@ -215,17 +216,6 @@ const webSocketInstance = (
         instance.close();
         console.log("Connection closed");
     };
-
-    // // Подключаемся ко всем пользователям для мониторинга отправленных сообщений
-    // const connectWithUsers = (users) => {
-    //     let objWebSockets = {};
-    //     users.forEach((user) => {
-    //         const to_id = user.id;
-    //         const instanceSidebar = webSocketInstanceSB(from_id, to_id, setCountUpdateSidebar);
-    //         objWebSockets[to_id] = instanceSidebar;
-    //     });
-    //     return objWebSockets;
-    // };
 
     return {
         sendMessage,
