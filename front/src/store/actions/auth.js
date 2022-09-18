@@ -56,7 +56,7 @@ export const logout = (token) => {
                     console.error("Logout failed! Error:", error);
                 });
         }
-
+        localStorage.removeItem("logo");
         dispatch(authLogout());
     };
 };

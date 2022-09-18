@@ -197,6 +197,7 @@ const Chat = (props) => {
             dispatch(actions.chatLoadingEnd());
             return;
         }
+
         setMessageItems(renderMessages());
 
         if (chatLoading) {
@@ -209,11 +210,12 @@ const Chat = (props) => {
     useEffect(() => {
         if (userTo !== null) {
             // Запускаем спиннер
-            dispatch(actions.chatStart());
+            // dispatch(actions.chatStart());
 
             // Обнуляем данные чата после его смены
             setMessages([]);
             setAvailableMessages(false);
+
             webSocket.fetchMessages();
         }
     }, [userTo]);
@@ -230,6 +232,10 @@ const Chat = (props) => {
 
     // Получаем пользователя, по которому кликнули в SideBar, для чата с ним
     useEffect(() => {
+        if (userToFromContext) {
+            dispatch(actions.chatStart());
+        }
+
         setUserTo(userToFromContext);
     }, [userToFromContext]);
 
@@ -290,8 +296,8 @@ const Chat = (props) => {
         </>
     );
 
-    const spinner = chatLoading && !chatLoaded ? <ChatSpinner /> : null;
-    const chatRoom = !chatLoading && chatLoaded ? UserChat : null;
+    const spinner = chatLoading ? <ChatSpinner /> : null;
+    const chatRoom = chatLoaded ? UserChat : null;
     const chatHello = !chatLoaded && !chatLoading ? <Hello /> : null;
 
     return (
@@ -303,8 +309,8 @@ const Chat = (props) => {
                 onScroll={onScrollChat}
                 onWheel={onScrollMouse}
             >
-                {spinner}
                 <div className="chat__container">
+                    {spinner}
                     {chatHello}
                     {chatRoom}
                 </div>
