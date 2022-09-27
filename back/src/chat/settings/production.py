@@ -2,7 +2,6 @@
 from pathlib import Path
 import environ
 
-
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 env = environ.Env()
@@ -15,7 +14,7 @@ SECRET_KEY = env('SECRET_KEY')
 DEBUG = False
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['w-chat.space', 'localhost']
 
 
 # Application definition
@@ -78,8 +77,11 @@ TEMPLATES = [
 
 CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "channels.layers.InMemoryChannelLayer"
-    }
+        "BACKEND":"channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("localhost", 6379)],
+            },  
+    },
 }
 
 WSGI_APPLICATION = 'chat.wsgi.application'
@@ -96,7 +98,7 @@ DATABASES = {
         'USER': env('USER_DB'),
         'PASSWORD': env('PASSWORD_DB'),
         'HOST': env('HOST_DB'),
-        'PORT': env('PORT_DB'),
+        'PORT': '',
     }
 }
 
@@ -136,6 +138,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = Path(BASE_DIR / 'static') 
 
 MEDIA_ROOT = Path(BASE_DIR / 'media')
 MEDIA_URL = '/media/'
@@ -152,3 +155,4 @@ ACCOUNT_EMAIL_VERIFICATION = "none"
 
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
+
